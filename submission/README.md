@@ -12,10 +12,18 @@
 | `follow-up-result.png` | ✅ | 测试场景二：同一会话连续追问，保留前轮地点条件 |
 | `actions-success.png` | ✅ | GitHub Actions 成功页（Deploy to EdgeOne Makers #2，绿勾，仓库 `heiha321/openai-agent-starter-python`，workflow `.github/workflows/deploy.yml`） |
 | `deploy-success.png` | ✅ | 腾讯云 EdgeOne 控制台构建详情页（项目 travel-decision-agent，部署 `dpn021hrh4kr`，状态「成功」，2026-10-26 10:48:11） |
-| `public-entry.txt` | ✅ | 公开预览地址与打开方式 |
+| `public-entry.txt` | ✅ | 公开预览地址（含 `eo_token`/`eo_time` 签名，可直接打开）与访问说明 |
 | `_deploy-log.txt` | ✅（辅助） | CLI 部署原始输出文本（真实命令日志，非截图） |
 
 提交材料 6/6 齐备，全部为真实运行/控制台/Actions 页面的直接截图。
+
+线上自检（2026-10-26 21:33）：未登录状态打开 `public-entry.txt` 中的预览链接，
+返回 200、页面标题「出行决策 Agent | EdgeOne Makers」；同一链接提交出行决策问题，
+返回结果与本地一致（龙湖北京丽泽天街，直线 1221 米 / 步行约 1867 米、29 分钟），
+说明线上不依赖本地开发服务，且地点与距离由高德工具返回而非模型自生成。
+
+部署记录：`dpq6g4qq1ok5`（2026-10-26 20:56，含修正后的代码面板）、`dpn021hrh4kr`
+（截图所用）、`dp7bu9z640pt`，均为 production 环境且构建成功。
 
 控制台截图路径：EdgeOne 控制台（国际站 console.tencentcloud.com）→ Makers → 项目
 travel-decision-agent → 构建部署 → 构建详情（Deployment `dpn021hrh4kr`）。
