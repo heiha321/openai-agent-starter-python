@@ -1,0 +1,12 @@
+[cli][✔] Project travel-decision-agent already exists. Using existing project.
+[cli][✔] Using Project ID: makers-vbyjllnctcrz
+[cli] Uploading folder to EdgeOne COS...
+[cli][Uploader] Uploading file: 100%
+[cli][✔] File uploaded successfully
+[cli][✔] Creating deployment in Production environment...
+[cli][✔] Created deployment with Deployment ID: dpn021hrh4kr
+[cli] Waiting for deployment to complete...
+[cli][✔] Deploy Success
+[cli][✔] Deploy URL: https://travel-decision-agent.edgeone.cool
+[cli][✔] Console URL: https://console.tencentcloud.com/edgeone/pages/project/makers-vbyjllnctcrz/deployment/dpn021hrh4kr
+{"status":"success","url":"https://travel-decision-agent.edgeone.cool","type":"preset","projectId":"makers-vbyjllnctcrz","deploymentId":"dpn021hrh4kr","consoleUrl":"https://console.tencentcloud.com/edgeone/pages/project/makers-vbyjllnctcrz/deployment/dpn021hrh4kr","isTld":0}

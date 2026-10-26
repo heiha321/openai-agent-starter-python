@@ -1,0 +1,20 @@
+出行决策 Agent —— 公开访问入口
+====================================
+
+正式地址（Deploy URL）：
+https://travel-decision-agent.edgeone.cool
+
+控制台部署页（可查看部署状态并点「预览」按钮打开带令牌的完整入口）：
+https://console.tencentcloud.com/edgeone/pages/project/makers-vbyjllnctcrz/deployment/dpn021hrh4kr
+
+说明：
+1. 本项目为 Makers preset 类型部署，直接裸开上面地址会返回 401，
+   这是 EdgeOne preset 站点的默认保护行为。
+2. 正确打开方式：登录腾讯云 → EdgeOne Makers 控制台 → 项目
+   travel-decision-agent → 点「预览」按钮，即可带令牌访问完整对话界面。
+3. Deployment ID：dpn021hrh4kr（production 环境）
+   Project ID：makers-vbyjllnctcrz
+
+推荐测试语：
+我在红莲南路地铁站附近，我想要去一个既有倍轻松又有西厅村屋的离得近的商场，帮我推荐。
+（Agent 会自动纠正「西厅村屋」→「西町村屋」，推荐龙湖北京丽泽天街，步行约 1.9 公里）
