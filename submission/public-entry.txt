@@ -5,14 +5,16 @@
 https://travel-decision-agent.edgeone.cool
 
 控制台部署页（可查看部署状态并点「预览」按钮打开带令牌的完整入口）：
-https://console.tencentcloud.com/edgeone/pages/project/makers-vbyjllnctcrz/deployment/dpn021hrh4kr
+https://console.tencentcloud.com/edgeone/pages/project/makers-vbyjllnctcrz/deployment/dpq6g4qq1ok5
 
 说明：
 1. 本项目为 Makers preset 类型部署，直接裸开上面地址会返回 401，
    这是 EdgeOne preset 站点的默认保护行为。
 2. 正确打开方式：登录腾讯云 → EdgeOne Makers 控制台 → 项目
    travel-decision-agent → 点「预览」按钮，即可带令牌访问完整对话界面。
-3. Deployment ID：dpn021hrh4kr（production 环境）
+3. Deployment ID：dpq6g4qq1ok5（production 环境，2026-10-26 20:56 部署，
+   含修正后的前端代码展示面板）
+   历史部署：dpn021hrh4kr、dp7bu9z640pt（同项目早期版本，均成功）
    Project ID：makers-vbyjllnctcrz
 
 推荐测试语：

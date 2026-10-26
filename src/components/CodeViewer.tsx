@@ -18,8 +18,8 @@ const Va  = token(styles.va);
 interface LineProps { n: number; children?: React.ReactNode }
 const L = ({ n, children }: LineProps) => (
   <div className={styles.line}>
-    <span className={styles.ln}>{String(n).padStart(2, ' ')}</span>
-    <span className={styles.lc}>{children ?? ' '}</span>
+    <span className={styles.ln}>{String(n).padStart(2, ' ')}</span>
+    <span className={styles.lc}>{children ?? ' '}</span>
   </div>
 );
 
@@ -38,7 +38,7 @@ export default function CodeViewer() {
       <div className={styles.header}>
         <div className={styles.headerLeft}>
           <span className={styles.fileIcon}>⬡</span>
-          <span className={styles.filename}>handler.py</span>
+          <span className={styles.filename}>agents/chat/index.py</span>
         </div>
         <span className={styles.badge}>READ ONLY</span>
       </div>
@@ -50,126 +50,100 @@ export default function CodeViewer() {
 
         <div className={styles.code}>
           {/* ── Imports ── */}
-          <L n={1}><Kw t="from " /><Va t="openai" /><Kw t=" import " /><Ty t="AsyncOpenAI" /></L>
-          <L n={2}><Kw t="from " /><Va t="agents" /><Kw t=" import " /><Ty t="Agent" /><Op t=", " /><Ty t="OpenAIChatCompletionsModel" /><Op t=", " /><Ty t="Runner" /><Op t=", " /><Dec t="function_tool" /></L>
-          <L n={3} />
+          <L n={1}><Kw t="from " /><Va t="agents" /><Kw t=" import " /><Ty t="Agent" /><Op t=", " /><Ty t="Runner" /></L>
+          <L n={2} />
+          <L n={3}><Kw t="from " /><Va t=".._tools" /><Kw t=" import " /><Op t="(" /></L>
+          <L n={4}><I1><Fn t="search_malls_nearby" /><Op t=", " /><Fn t="search_brand_in_mall" /><Op t="," /></I1></L>
+          <L n={5}><I1><Fn t="get_distance" /><Op t=", " /><Fn t="check_brands_in_malls" /><Op t="," /></I1></L>
+          <L n={6}><Op t=")" /></L>
+          <L n={7} />
 
-          {/* ── 1. Tool definition ── */}
-          <L n={4}><Cmt t="# 1. Define tools with @function_tool" /></L>
-          <L n={5}><Dec t="@function_tool" /></L>
-          <L n={6}>
-            <Kw t="def " /><Fn t="get_weather" /><Op t="(" />
-            <Va t="city" /><Op t=": " /><Ty t="Annotated" /><Op t="[" />
-            <Ty t="str" /><Op t=", " /><Str t='"The city to get weather for"' />
-            <Op t="]) -> " /><Ty t="str" /><Op t=":" />
-          </L>
-          <L n={7}>
-            <I1><Doc t='"""Get the current weather for a specified city."""' /></I1>
-          </L>
-          <L n={8}>
-            <I1><Cmt t="# ..." /></I1>
-          </L>
-          <L n={9} />
+          {/* ── 1. 高德真实工具 ── */}
+          <L n={8}><Cmt t="# 1. 高德地图真实工具：Key 只从环境变量读取" /></L>
+          <L n={9}><Dec t="@function_tool" /></L>
           <L n={10}>
-            <Va t="TOOLS" /><Op t=" = [" /><Fn t="get_weather" /><Op t=", " /><Cmt t="# More tools..." /><Op t="]" />
+            <Kw t="def " /><Fn t="search_malls_nearby" /><Op t="(" />
+            <Va t="location" /><Op t=": " /><Ty t="str" /><Op t=", " />
+            <Va t="radius_m" /><Op t=": " /><Ty t="int" /><Op t=" = " /><Va t="3000" /><Op t=") -> " /><Ty t="str" /><Op t=":" />
           </L>
-          <L n={11} />
-
-          {/* ── 2. Handler ── */}
-          <L n={12}>
-            <Kw t="async def " /><Fn t="handler" /><Op t="(" /><Va t="context" /><Op t="):" />
-          </L>
-          <L n={13}>
-            <I1><Va t="message" /><Op t=" = " /><Va t="context" /><Op t="." /><Va t="request" /><Op t="." /><Va t="body" /><Op t="." /><Fn t="get" /><Op t="(" /><Str t='"message"' /><Op t=", " /><Str t='""' /><Op t=")" /></I1>
-          </L>
+          <L n={11}><I1><Doc t='"""按 types=060100 检索周边商场，结果按距离升序。"""' /></I1></L>
+          <L n={12} />
+          <L n={13}><Dec t="@function_tool" /></L>
           <L n={14}>
-            <I1><Va t="conversation_id" /><Op t=" = " /><Va t="context" /><Op t="." /><Va t="conversation_id" /></I1>
+            <Kw t="def " /><Fn t="search_brand_in_mall" /><Op t="(" />
+            <Va t="mall" /><Op t=": " /><Ty t="str" /><Op t=", " /><Va t="brand" /><Op t=": " /><Ty t="str" /><Op t=") -> " /><Ty t="str" /><Op t=":" />
           </L>
-          <L n={15}>
-            <I1><Va t="store" /><Op t=" = " /><Va t="context" /><Op t="." /><Va t="store" /></I1>
-          </L>
+          <L n={15}><I1><Doc t='"""核验商场内是否有该品牌门店，返回门店名与楼层。"""' /></I1></L>
           <L n={16} />
-
-          {/* ── 3. Store: save user message ── */}
-          <L n={17}>
-            <I1><Cmt t="# 2. Store: save user message for history" /></I1>
-          </L>
+          <L n={17}><Dec t="@function_tool" /></L>
           <L n={18}>
-            <I1><Kw t="await " /><Va t="store" /><Op t="." /><Fn t="append_message" /><Op t="(" /><Va t="conversation_id" /><Op t=", " /><Str t='"user"' /><Op t=", " /><Va t="message" /><Op t=")" /></I1>
+            <Kw t="def " /><Fn t="get_distance" /><Op t="(" />
+            <Va t="origin" /><Op t=": " /><Ty t="str" /><Op t=", " /><Va t="destination" /><Op t=": " /><Ty t="str" /><Op t=") -> " /><Ty t="str" /><Op t=":" />
           </L>
-          <L n={19} />
-
-          {/* ── 4. Store: inject session memory ── */}
-          <L n={20}>
-            <I1><Cmt t="# 3. Store: inject OpenAI Agents SDK session memory" /></I1>
+          <L n={19}><I1><Doc t='"""步行/驾车距离与耗时，接口不可用时退回直线距离。"""' /></I1></L>
+          <L n={20} />
+          <L n={21}><Dec t="@function_tool" /></L>
+          <L n={22}>
+            <Kw t="def " /><Fn t="check_brands_in_malls" /><Op t="(" />
+            <Va t="location" /><Op t=": " /><Ty t="str" /><Op t=", " />
+            <Va t="mall_names" /><Op t=": " /><Ty t="str" /><Op t=", " />
+            <Va t="brands" /><Op t=": " /><Ty t="str" /><Op t=") -> " /><Ty t="str" /><Op t=":" />
           </L>
-          <L n={21}>
-            <I1><Va t="session" /><Op t=" = " /><Va t="store" /><Op t="." /><Fn t="openai_session" /><Op t="(" /><Va t="conversation_id" /><Op t=")" /></I1>
-          </L>
-          <L n={22} />
-
-          {/* ── 5. Create Agent ── */}
-          <L n={23}>
-            <I1><Cmt t="# 4. Create OpenAI Agent" /></I1>
-          </L>
-          <L n={24}>
-            <I1><Va t="agent" /><Op t=" = " /><Ty t="Agent" /><Op t="(" /></I1>
-          </L>
+          <L n={23}><I1><Doc t='"""批量核验多商场 × 多品牌，按距离排序。"""' /></I1></L>
+          <L n={24} />
           <L n={25}>
-            <I2><Va t="name" /><Op t="=" /><Str t='"EdgeOne Assistant"' /><Op t="," /></I2>
+            <Va t="TOOLS" /><Op t=" = [" /><Fn t="search_malls_nearby" /><Op t=", " /><Fn t="search_brand_in_mall" /><Op t="," />
           </L>
-          <L n={26}>
-            <I2><Va t="instructions" /><Op t="=" /><Va t="INSTRUCTIONS" /><Op t="," /></I2>
-          </L>
-          <L n={27}>
-            <I2><Va t="model" /><Op t="=" /><Va t="llm_model" /><Op t="," /></I2>
-          </L>
-          <L n={28}>
-            <I2><Va t="tools" /><Op t="=" /><Va t="TOOLS" /><Op t="," /></I2>
-          </L>
-          <L n={29}>
-            <I1><Op t=")" /></I1>
-          </L>
-          <L n={30} />
+          <L n={26}><I1><Fn t="get_distance" /><Op t=", " /><Fn t="check_brands_in_malls" /><Op t="]" /></I1></L>
+          <L n={27} />
 
-          {/* ── 6. Run Agent with session ── */}
+          {/* ── 2. Agent ── */}
+          <L n={28}><Cmt t="# 2. Agent：出行决策助手" /></L>
+          <L n={29}>
+            <Va t="agent" /><Op t=" = " /><Ty t="Agent" /><Op t="(" />
+          </L>
+          <L n={30}>
+            <I1><Va t="name" /><Op t="=" /><Str t='"出行决策助手"' /><Op t="," /></I1>
+          </L>
           <L n={31}>
-            <I1><Cmt t="# 5. Run Agent with Store session" /></I1>
+            <I1><Va t="instructions" /><Op t="=" /><Va t="INSTRUCTIONS" /><Op t="," /><Cmt t="  # 决策流程与硬性规则" /></I1>
           </L>
           <L n={32}>
-            <I1><Va t="result" /><Op t=" = " /><Ty t="Runner" /><Op t="." /><Fn t="run_streamed" /><Op t="(" /></I1>
+            <I1><Va t="tools" /><Op t="=" /><Va t="TOOLS" /><Op t="," /></I1>
           </L>
           <L n={33}>
-            <I2><Va t="agent" /><Op t="," /></I2>
+            <I1><Va t="model" /><Op t="=" /><Va t="llm_model" /><Op t="," /></I1>
           </L>
           <L n={34}>
-            <I2><Va t="input" /><Op t="=" /><Va t="message" /><Op t="," /></I2>
+            <Op t=")" />
           </L>
-          <L n={35}>
-            <I2><Va t="session" /><Op t="=" /><Va t="session" /><Op t="," /></I2>
-          </L>
-          <L n={36}>
-            <I1><Op t=")" /></I1>
-          </L>
-          <L n={37} />
+          <L n={35} />
 
-          {/* ── 7. Collect result & save ── */}
+          {/* ── 3. Handler ── */}
+          <L n={36}>
+            <Kw t="async def " /><Fn t="handler" /><Op t="(" /><Va t="context" /><Op t="):" />
+          </L>
+          <L n={37}>
+            <I1><Va t="message" /><Op t=" = " /><Va t="context" /><Op t="." /><Va t="request" /><Op t="." /><Va t="body" /><Op t="." /><Fn t="get" /><Op t="(" /><Str t='"message"' /><Op t=", " /><Str t='""' /><Op t=")" /></I1>
+          </L>
           <L n={38}>
-            <I1><Cmt t="# SSE streaming omitted..." /></I1>
+            <I1><Va t="cid" /><Op t=" = " /><Va t="context" /><Op t="." /><Va t="conversation_id" /></I1>
           </L>
           <L n={39}>
-            <I1><Va t="assistant_text" /><Op t=" = " /><Kw t="await " /><Fn t="collect_text" /><Op t="(" /><Va t="result" /><Op t=")" /></I1>
+            <I1><Va t="session" /><Op t=" = " /><Va t="context" /><Op t="." /><Va t="store" /><Op t="." /><Fn t="openai_session" /><Op t="(" /><Va t="cid" /><Op t=")" /></I1>
           </L>
           <L n={40} />
           <L n={41}>
-            <I1><Cmt t="# 6. Store: save assistant reply for /history" /></I1>
+            <I1><Cmt t="# 3. 流式输出，多轮记忆由 SDK session 自动注入" /></I1>
           </L>
           <L n={42}>
-            <I1><Kw t="await " /><Va t="store" /><Op t="." /><Fn t="append_message" /><Op t="(" /><Va t="conversation_id" /><Op t=", " /><Str t='"assistant"' /><Op t=", " /><Va t="assistant_text" /><Op t=")" /></I1>
+            <I1><Va t="result" /><Op t=" = " /><Ty t="Runner" /><Op t="." /><Fn t="run_streamed" /><Op t="(" /><Va t="agent" /><Op t=", " /><Va t="message" /><Op t=", " /><Va t="session" /><Op t=")" /></I1>
           </L>
-          <L n={43} />
+          <L n={43}>
+            <I1><Kw t="async for " /><Va t="event" /><Kw t=" in " /><Va t="result" /><Op t="." /><Fn t="stream_events" /><Op t="():" /></I1>
+          </L>
           <L n={44}>
-            <I1><Kw t="return " /><Op t="{" /><Str t='"answer"' /><Op t=": " /><Va t="assistant_text" /><Op t="}" /></I1>
+            <I2><Cmt t="# text_delta / tool_called → SSE 帧" /></I2>
           </L>
         </div>
       </div>

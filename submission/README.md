@@ -1,41 +1,36 @@
 # 出行决策 Agent —— 课后提交说明
 
 > 项目：travel-decision-agent（OpenAI Agents SDK + EdgeOne Makers + 高德地图 Web 服务）
-> 完成时间：2026-10-26
+> 完成时间：2026-10-26（当晚 20:43 更新过一轮截图，见文末"更新记录"）
 
 ## 一、提交清单
 
 | 文件 | 状态 | 说明 |
 |---|---|---|
-| `local-running.png` | ✅ | 本地 8088 调试页（edgeone makers dev） |
+| `local-running.png` | ✅ | 本地调试页（8088 调试服务 + 前端），右侧代码面板为 `agents/chat/index.py` 真实实现 |
 | `normal-result.png` | ✅ | 测试场景一：正常请求结果（可见完整工具调用链） |
 | `follow-up-result.png` | ✅ | 测试场景二：同一会话连续追问，保留前轮地点条件 |
-| `deploy-success.png` | ✅ | CLI 部署成功输出（`_deploy-log.txt` 为原始记录） |
-| `deploy-success-console.png` | ✅ | 腾讯云 EdgeOne 控制台构建详情页（项目 travel-decision-agent，部署 `dpn021hrh4kr`，状态「成功」，2026-10-26 10:48:11） |
+| `actions-success.png` | ✅ | GitHub Actions 成功页（Deploy to EdgeOne Makers #2，绿勾，仓库 `heiha321/openai-agent-starter-python`，workflow `.github/workflows/deploy.yml`） |
+| `deploy-success.png` | ✅ | 腾讯云 EdgeOne 控制台构建详情页（项目 travel-decision-agent，部署 `dpn021hrh4kr`，状态「成功」，2026-10-26 10:48:11） |
 | `public-entry.txt` | ✅ | 公开预览地址与打开方式 |
-| `actions-success.png` | ❌ | 未能提供，原因见下 |
+| `_deploy-log.txt` | ✅（辅助） | CLI 部署原始输出文本（真实命令日志，非截图） |
+
+提交材料 6/6 齐备，全部为真实运行/控制台/Actions 页面的直接截图。
 
 控制台截图路径：EdgeOne 控制台（国际站 console.tencentcloud.com）→ Makers → 项目
 travel-decision-agent → 构建部署 → 构建详情（Deployment `dpn021hrh4kr`）。
 
-## 二、actions-success.png 缺失原因
+## 二、GitHub Actions 说明
 
-本机课程流程走的是 `edgeone makers deploy` CLI 直传部署，没有绑定 GitHub 仓库，
-因此不存在 GitHub Actions 触发记录。本次曾尝试补做，受阻于环境：
+仓库：`heiha321/openai-agent-starter-python`（public fork，main 分支）
+工作流：`.github/workflows/deploy.yml` —— push 到 main 时自动执行
+`edgeone makers deploy ./ -n travel-decision-agent -e production`，Token 取自
+Secret `EDGEONE_API_TOKEN`。运行 #2 构建成功（约 2 分钟），截图见 `actions-success.png`。
 
-- 本机网络访问 `github.com` 直连超时（`ERR_CONNECTION_TIMED_OUT`），校园网封锁 GitHub；
-- 电脑无任何代理/VPN 软件，手机热点亦无法连接，故当日无法创建仓库与触发 Actions。
-
-**部署真实性与成功状态由以下三重证据佐证**：`deploy-success.png`（CLI 输出）、
-`deploy-success-console.png`（腾讯云 EdgeOne 控制台构建详情页，部署 `dpn021hrh4kr` 状态「成功」）、
-`_deploy-log.txt`（原始部署日志）。
-
-如后续网络可用，补做步骤（工作流文件已备好 `.github/workflows/deploy.yml`）：
-
-1. 注册/登录 GitHub，新建空仓库 `travel-decision-agent`（不勾任何初始化选项）；
-2. 推送本目录代码（`.env`、`.venv`、`node_modules` 均已在 .gitignore 排除）；
-3. 仓库 Settings → Secrets and variables → Actions → 新建 `EDGEONE_API_TOKEN`（值为 Makers 控制台生成的 API Token）；
-4. Push 自动触发 workflow（或手动 Run workflow），构建出现绿勾后截 Actions 页面。
+注 1：首次运行 #1 因 Secret 尚未配置而失败，配置后空提交触发运行 #2 成功，两次记录均保留可查。
+注 2（与手册的差异说明）：手册建议 Fork 时将仓库名改为 `travel-decision-agent`；
+本仓库保留了 Fork 默认名 `openai-agent-starter-python`，Makers 侧项目名为
+`travel-decision-agent`（部署名、访问地址均一致），不影响部署与验收。
 
 ## 三、实现要点
 
@@ -78,3 +73,18 @@ edgeone makers dev --port 8088 -n travel-decision-agent -t <EDGEONE_API_TOKEN>
 # 4. 部署
 edgeone makers deploy ./ -n travel-decision-agent -t <EDGEONE_API_TOKEN> -e production
 ```
+
+## 六、更新记录（2026-10-26 晚）
+
+1. **修正代码展示面板**：`src/components/CodeViewer.tsx` 原为模板硬编码的示例代码
+   （`get_weather` / "EdgeOne Assistant"），已改为展示真实实现（4 个高德工具 + 出行决策助手
+   Agent 定义），`local-running.png` 等截图右侧面板与实际代码一致。
+2. **重拍本地与对话截图**：`local-running.png` / `normal-result.png` / `follow-up-result.png`
+   为当晚 20:42-20:43 通过真实浏览器对话重新截取（自动化脚本 `_tools/shot.js`，输出原始文本
+   存档于 `复现证据/_page-text.txt`）。
+3. **替换部署截图**：原 `deploy-success.png` 为 HTML 渲染图（非真实截图），已弃用并归档至
+   `复现证据/_弃用-渲染版部署图.png`；现 `deploy-success.png` 为控制台构建详情页的真实截图
+   （Deployment `dpn021hrh4kr`）。CLI 部署原始日志保留在 `_deploy-log.txt`。
+4. **重新部署**：因第 1 项的前端改动，2026-10-26 20:56 已重新部署 production
+   （Deployment `dpq6g4qq1ok5`，构建成功），线上地址不变；
+   `public-entry.txt` 已指向最新部署。
