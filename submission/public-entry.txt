@@ -1,21 +1,29 @@
 出行决策 Agent —— 公开访问入口
 ====================================
 
-正式地址（Deploy URL）：
-https://travel-decision-agent.edgeone.cool
+【临时预览地址】（可直接打开，无需登录，复制整条到浏览器）
+https://travel-decision-agent.edgeone.cool?eo_token=0da4dfa7136f9efb3b5540d84393c914&eo_time=1793021531
 
-控制台部署页（可查看部署状态并点「预览」按钮打开带令牌的完整入口）：
+【站点地址】https://travel-decision-agent.edgeone.cool
+【项目】travel-decision-agent（Project ID：makers-vbyjllnctcrz）
+【最新部署】dpq6g4qq1ok5（production，2026-10-26 20:56，状态：成功）
+　　历史部署：dpn021hrh4kr、dp7bu9z640pt（同项目早期版本，均成功）
+【控制台部署页（含「预览」按钮）】
 https://console.tencentcloud.com/edgeone/pages/project/makers-vbyjllnctcrz/deployment/dpq6g4qq1ok5
 
-说明：
-1. 本项目为 Makers preset 类型部署，直接裸开上面地址会返回 401，
-   这是 EdgeOne preset 站点的默认保护行为。
-2. 正确打开方式：登录腾讯云 → EdgeOne Makers 控制台 → 项目
-   travel-decision-agent → 点「预览」按钮，即可带令牌访问完整对话界面。
-3. Deployment ID：dpq6g4qq1ok5（production 环境，2026-10-26 20:56 部署，
-   含修正后的前端代码展示面板）
-   历史部署：dpn021hrh4kr、dp7bu9z640pt（同项目早期版本，均成功）
-   Project ID：makers-vbyjllnctcrz
+关于访问方式的说明：
+1. 本项目为 EdgeOne Makers preset 类型部署，站点默认开启访问保护，
+   不带签名参数直接打开 https://travel-decision-agent.edgeone.cool 会返回 401
+   （页面提示 “eo_time missing”），这是平台默认行为，不是部署失败。
+2. 正确打开方式有两种，任选其一：
+   ① 直接打开上面的【临时预览地址】（含 eo_token + eo_time 签名参数；
+      首次访问会 302 跳转到站点首页并自动写入访问 cookie，属正常现象）；
+   ② 登录腾讯云 EdgeOne Makers 控制台 → 项目 travel-decision-agent
+      → 点击「预览」按钮，平台会自动生成带签名的访问链接。
+3. 签名链接有时效性。若提示 “Access Restricted or Authentication Expired”，
+   重新在控制台点一次「预览」即可获得新链接，无需重新部署。
+4. 线上自检记录（2026-10-26 21:33）：未登录状态下用上述链接访问，
+   返回 200，页面标题「出行决策 Agent | EdgeOne Makers」，页面不依赖本地开发服务。
 
 推荐测试语：
 我在红莲南路地铁站附近，我想要去一个既有倍轻松又有西厅村屋的离得近的商场，帮我推荐。
